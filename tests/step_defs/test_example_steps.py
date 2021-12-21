@@ -2,6 +2,7 @@ import time
 
 from pytest_bdd import scenario, given, when, then
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 
 
 @scenario('../features/example.feature', 'Example Scenario')
@@ -11,7 +12,9 @@ def test():
 
 @given("I exist", target_fixture="browser")
 def browser():
-    browser = webdriver.Chrome()
+    options = Options()
+    options.add_argument("--headless")
+    browser = webdriver.Chrome(options=options)
     browser.maximize_window()
     browser.implicitly_wait(10)
     return browser
@@ -20,5 +23,4 @@ def browser():
 @then("I run")
 def step_impl(browser):
     browser.get('https://github.com')
-    time.sleep(5)
     browser.quit()
